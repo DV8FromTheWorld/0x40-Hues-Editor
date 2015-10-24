@@ -71,7 +71,7 @@ public class FileHandler
         	if (pack.getName().equals("BuiltResourcePack"))
         	{
         		ScriptExportSettings as = new  ScriptExportSettings(ScriptExportMode.AS, false);
-                File file = pack.export(Core.EXTRACTED_SCRIPTS_LOCATION, as, true);
+                File file = pack.export(new File(Core.EXTRACTED_SCRIPTS_LOCATION + "BuiltResourcePack.as"), as, true);
         	}
         }
         swfFileStream.close();

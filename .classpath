@@ -3,6 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre8"/>
 	<classpathentry kind="lib" path="library/Zip/bin/zip4j_1.3.2.jar" sourcepath="library/Zip/src"/>
-	<classpathentry kind="lib" path="library/ffdec/ffdec_5.3.0_lib.jar"/>
+	<classpathentry kind="lib" path="library/ffdec/jar/ffdec_6.0.2_lib.jar" sourcepath="library/ffdec/src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
