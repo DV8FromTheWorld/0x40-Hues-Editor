@@ -133,7 +133,7 @@ public class XMLTokener extends JSONTokener {
             } else if (c == ';') {
                 break;
             } else {
-            	return ampersand + sb.toString() + c;
+                return ampersand + sb.toString() + c;
 //                throw syntaxError("Missing ';' in XML entity: &" + sb);
             }
         }

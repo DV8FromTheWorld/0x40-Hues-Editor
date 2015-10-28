@@ -19,45 +19,45 @@ import com.jpexs.decompiler.flash.tags.DefineBinaryDataTag;
 
 public class FileHandler
 {
-	public static final String RES_PACKS_LOCATION = "./Resources/packs/";
-	public static final String SWF_FILE = "./hues.swf";
-			
-	public static String loadFile(String filePath) throws IOException
-	{
-		return loadFileKeepLineBreaks(filePath).replaceAll("\r|\n", "");
-	}
-	
-	public static String loadFileKeepLineBreaks(String filePath) throws IOException
-	{
-		return new String(Files.readAllBytes(Paths.get(filePath)), "UTF-8");
-	}
-	
-	public static boolean doesResPackExist(String folderName)
-	{
-		return fileOrFolderExists(RES_PACKS_LOCATION + folderName);
-	}
-	
-	public static boolean fileOrFolderExists(String path)
-	{
-		File file = new File(path);
-		return file.exists();
-	}
-	
-	public static void unzipResPack(File resPackFile, String folderName) throws ZipException
-	{
-		ZipFile resZip = new ZipFile(resPackFile);
-		resZip.extractAll(RES_PACKS_LOCATION + folderName);
-	}
-	
-	public static void extractRequiredFilesFromSWF() throws IOException, InterruptedException
-	{
-		File swfFile = new File(SWF_FILE);
-		if (!swfFile.exists())
-		{
-			Downloader.file("http://muhnig.ga/versions/0x40%20Hues%20v5.11.swf", SWF_FILE);
-		}
-		
-		FileInputStream swfFileStream = new FileInputStream(swfFile);
+    public static final String RES_PACKS_LOCATION = "./Resources/packs/";
+    public static final String SWF_FILE = "./hues.swf";
+
+    public static String loadFile(String filePath) throws IOException
+    {
+        return loadFileKeepLineBreaks(filePath).replaceAll("\r|\n", "");
+    }
+
+    public static String loadFileKeepLineBreaks(String filePath) throws IOException
+    {
+        return new String(Files.readAllBytes(Paths.get(filePath)), "UTF-8");
+    }
+
+    public static boolean doesResPackExist(String folderName)
+    {
+        return fileOrFolderExists(RES_PACKS_LOCATION + folderName);
+    }
+
+    public static boolean fileOrFolderExists(String path)
+    {
+        File file = new File(path);
+        return file.exists();
+    }
+
+    public static void unzipResPack(File resPackFile, String folderName) throws ZipException
+    {
+        ZipFile resZip = new ZipFile(resPackFile);
+        resZip.extractAll(RES_PACKS_LOCATION + folderName);
+    }
+
+    public static void extractRequiredFilesFromSWF() throws IOException, InterruptedException
+    {
+        File swfFile = new File(SWF_FILE);
+        if (!swfFile.exists())
+        {
+            Downloader.file("http://muhnig.ga/versions/0x40%20Hues%20v5.11.swf", SWF_FILE);
+        }
+
+        FileInputStream swfFileStream = new FileInputStream(swfFile);
         SWF swf = new SWF(swfFileStream, new Boolean(false));
         DefineBinaryDataTag binaryDataTag = (DefineBinaryDataTag) swf.getCharacter(3); //3 is the BinaryData that contains the important ActionScript classes
         if (binaryDataTag == null)
@@ -68,12 +68,15 @@ public class FileHandler
         SWF bswf = new SWF(is, false);
         for (ScriptPack pack : bswf.getAS3Packs())
         {
-        	if (pack.getName().equals("BuiltResourcePack"))
-        	{
-        		ScriptExportSettings as = new  ScriptExportSettings(ScriptExportMode.AS, false);
+            if (pack.getName().equals("BuiltResourcePack"))
+//            if (pack.getName().equals("HuesReloadedRe"))
+            {
+                ScriptExportSettings as = new  ScriptExportSettings(ScriptExportMode.AS, false);
+//                ScriptExportSettings as = new  ScriptExportSettings(ScriptExportMode.PCODE, false);
                 File file = pack.export(new File(Core.EXTRACTED_SCRIPTS_LOCATION + "BuiltResourcePack.as"), as, true);
-        	}
+//                File file = pack.export(new File(Core.EXTRACTED_SCRIPTS_LOCATION + "HuesReloadedRe.as"), as, true);
+            }
         }
         swfFileStream.close();
-	}
+    }
 }

@@ -47,44 +47,42 @@ import javax.swing.JTree;
  */
 public class CheckBoxNodeData {
 
-	private String text;
-	private boolean checked;
-	private boolean enabled;
-	
-	public CheckBoxNodeData(final String text, final boolean checked, final boolean enabled) {
-		this.text = text;
-		this.checked = checked;
-		this.enabled = enabled;
-	}
+    private String text;
+    private boolean checked;
+    private boolean enabled;
 
-	public boolean isChecked() {
-		return checked;
-	}
+    public CheckBoxNodeData(final String text, final boolean checked, final boolean enabled) {
+        this.text = text;
+        this.checked = checked;
+        this.enabled = enabled;
+    }
 
-	public void setChecked(final boolean checked) {
-		this.checked = checked;
-	}
+    public boolean isChecked() {
+        return checked;
+    }
 
-	public boolean isEnabled() {
-		return enabled;
-	}
-	
-	public void setEnabled(final boolean enabled) {
-		this.enabled = enabled;
-	}
-	
-	
-	public String getText() {
-		return text;
-	}
+    public void setChecked(final boolean checked) {
+        this.checked = checked;
+    }
 
-	public void setText(final String text) {
-		this.text = text;
-	}
+    public boolean isEnabled() {
+        return enabled;
+    }
 
-	@Override
-	public String toString() {
-		return getClass().getName() + "[" + text + "/" + checked + "]";
-	}
+    public void setEnabled(final boolean enabled) {
+        this.enabled = enabled;
+    }
 
+    public String getText() {
+        return text;
+    }
+
+    public void setText(final String text) {
+        this.text = text;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + "[" + text + "/" + checked + "]";
+    }
 }

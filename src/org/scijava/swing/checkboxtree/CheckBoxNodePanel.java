@@ -43,20 +43,19 @@ import javax.swing.JPanel;
  * Thanks to Jason S of StackOverflow for <a
  * href="http://stackoverflow.com/a/1224207">his example code</a>.
  * </p>
- * 
+ *
  * @author Curtis Rueden
  */
 @SuppressWarnings("serial")
 public class CheckBoxNodePanel extends JPanel {
 
-	public final JLabel label = new JLabel();
-	public final JCheckBox check = new JCheckBox();
+    public final JLabel label = new JLabel();
+    public final JCheckBox check = new JCheckBox();
 
-	public CheckBoxNodePanel() {
-		this.check.setMargin(new Insets(0, 0, 0, 0));
-		setLayout(new BorderLayout());
-		add(check, BorderLayout.WEST);
-		add(label, BorderLayout.CENTER);
-	}
-
+    public CheckBoxNodePanel() {
+        this.check.setMargin(new Insets(0, 0, 0, 0));
+        setLayout(new BorderLayout());
+        add(check, BorderLayout.WEST);
+        add(label, BorderLayout.CENTER);
+    }
 }
