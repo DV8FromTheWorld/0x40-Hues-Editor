@@ -23,7 +23,12 @@ public class Image implements Comparable<Image>
 
     public boolean isChecked()
     {
-        return node != null ? node.isChecked() && node.isEnabled() : false;
+        return node != null ? node.isChecked() : true;
+    }
+
+    public boolean isEnabled()
+    {
+        return node != null ? node.isEnabled() : true;
     }
 
     public String getName()

@@ -21,11 +21,6 @@ public class Song implements Comparable<Song>
         this.node = null;
     }
 
-    public boolean isChecked()
-    {
-        return node != null ? node.isChecked() && node.isEnabled() : false;
-    }
-
     public String getTitle()
     {
         return title;
@@ -39,6 +34,16 @@ public class Song implements Comparable<Song>
     public CheckBoxNode getCheckboxNode()
     {
         return node;
+    }
+
+    public boolean isChecked()
+    {
+        return node != null ? node.isChecked() : true;
+    }
+
+    public boolean isEnabled()
+    {
+        return node != null ? node.isEnabled() : true;
     }
 
     public void setCheckboxNode(CheckBoxNode node)
