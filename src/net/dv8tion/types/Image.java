@@ -2,6 +2,8 @@ package net.dv8tion.types;
 
 import net.dv8tion.gui.CheckBoxNode;
 
+import org.json.JSONWriter;
+
 public class Image implements Comparable<Image>
 {
     private String name;
@@ -49,6 +51,17 @@ public class Image implements Comparable<Image>
     public void setCheckboxNode(CheckBoxNode node)
     {
         this.node = node;
+    }
+
+    public void writeToJson(JSONWriter writer)
+    {
+        writer
+            .object()
+                .key("name").value(this.getName())
+                .key("checked").value(this.isChecked())
+                .key("enabled").value(this.isEnabled())
+                .key("bitmap").value(this.getBitmapName())
+            .endObject();
     }
 
     @Override

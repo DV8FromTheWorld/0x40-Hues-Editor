@@ -17,6 +17,13 @@ public class ResPackConfiguration
 {
     private ArrayList<ResPack> packs;
 
+    //Used for testing.
+    public static void main(String[] args) throws IOException
+    {
+        String testJSON = new String(Files.readAllBytes(Paths.get("Config.xml")), "UTF-8");
+        new ResPackConfiguration(testJSON);
+    }
+
     public ResPackConfiguration()
     {
         packs = new ArrayList<ResPack>();
@@ -67,25 +74,13 @@ public class ResPackConfiguration
                     .key("images").array();
             for (Image image : pack.images)
             {
-                writer
-                    .object()
-                        .key("name").value(image.getName())
-                        .key("checked").value(image.isChecked())
-                        .key("enabled").value(image.isEnabled())
-                        .key("bitmap").value(image.getBitmapName())
-                    .endObject();
+                image.writeToJson(writer);
             }
             writer.endArray();
             writer.key("songs").array();
             for (Song song : pack.songs)
             {
-                writer
-                    .object()
-                        .key("title").value(song.getTitle())
-                        .key("checked").value(song.isChecked())
-                        .key("enabled").value(song.isEnabled())
-                        .key("sound").value(song.getSoundName())
-                    .endObject();
+                song.writeToJson(writer);
             }
             writer.endArray();
             writer.endObject();

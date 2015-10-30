@@ -2,6 +2,8 @@ package net.dv8tion.types;
 
 import net.dv8tion.gui.CheckBoxNode;
 
+import org.json.JSONWriter;
+
 public class Song implements Comparable<Song>
 {
     private String title;
@@ -51,6 +53,16 @@ public class Song implements Comparable<Song>
         this.node = node;
     }
 
+    public void writeToJson(JSONWriter writer)
+    {
+        writer
+            .object()
+                .key("title").value(this.getTitle())
+                .key("checked").value(this.isChecked())
+                .key("enabled").value(this.isEnabled())
+                .key("sound").value(this.getSoundName())
+            .endObject();
+    }
     @Override
     public int compareTo(Song compare)
     {
