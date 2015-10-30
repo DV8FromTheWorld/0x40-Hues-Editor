@@ -1,7 +1,6 @@
 package net.dv8tion.gui;
 
-import java.util.ArrayList;
-
+import net.dv8tion.ResPackConfiguration;
 import net.dv8tion.types.Image;
 import net.dv8tion.types.ResPack;
 import net.dv8tion.types.Song;
@@ -9,9 +8,9 @@ import net.dv8tion.types.Song;
 @SuppressWarnings("serial")
 public class ImageSongTreePane extends TreePane
 {
-    public ImageSongTreePane(ArrayList<ResPack> resPacks)
+    public ImageSongTreePane(ResPackConfiguration config)
     {
-        super(resPacks);
+        super(config);
 
         CheckBoxNode imageNode = add(root, "Images", true);
         for (ResPack pack : resPacks)
@@ -24,7 +23,7 @@ public class ImageSongTreePane extends TreePane
             CheckBoxNode packNode = add(imageNode, pack.name, true);
             for (Image image : pack.images)
             {
-                image.setCheckboxNode(add(packNode, image.getName(), true));
+                image.setCheckboxNode(add(packNode, image.getName(), image.isChecked()));
             }
         }
 
@@ -39,7 +38,7 @@ public class ImageSongTreePane extends TreePane
             CheckBoxNode packNode = add(songNode, pack.name, true);
             for (Song song : pack.songs)
             {
-                song.setCheckboxNode(add(packNode, song.getTitle(), true));
+                song.setCheckboxNode(add(packNode, song.getTitle(), song.isChecked()));
             }
         }
         setTree(root);

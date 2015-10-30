@@ -2,7 +2,6 @@ package net.dv8tion;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.io.StringWriter;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -13,11 +12,7 @@ import javax.swing.tree.TreePath;
 import net.dv8tion.gui.MenuBar;
 import net.dv8tion.gui.ResPackTreePane;
 import net.dv8tion.gui.TreePane;
-import net.dv8tion.types.Image;
 import net.dv8tion.types.ResPack;
-import net.dv8tion.types.Song;
-
-import org.json.JSONWriter;
 
 public class Core
 {
@@ -26,7 +21,7 @@ public class Core
     public static final String BUILT_RESOURCE_PACK_PATH = EXTRACTED_SCRIPTS_LOCATION + BUILD_RESOURCE_PACK;
     public static final String REMOTE_RES_PACKS_URL = "http://cdn.0x40hu.es/getRespacks.php";
 
-    private static ArrayList<ResPack> packs;
+    private static ResPackConfiguration respackConfig;
     private static JFrame frame;
 
     /**
@@ -39,12 +34,13 @@ public class Core
      */
     public static void main(String[] args) throws Exception
     {
+        respackConfig = new ResPackConfiguration();
         //Open window - Preforming Setup
         FileHandler.extractRequiredFilesFromSWF();  //Downloading SWF
         loadResPacks();  //Downloading respack (n)  - Loading respack (n)
 
         frame = new JFrame();
-        setTreePane(new ResPackTreePane(packs));    //Defaults to the ResPack Layout (As opposed to the ImageSong Layout)
+        setTreePane(new ResPackTreePane(respackConfig));    //Defaults to the ResPack Layout (As opposed to the ImageSong Layout)
 
         frame.setJMenuBar(new MenuBar());
 
@@ -98,62 +94,19 @@ public class Core
     }
 
     /**
-     * Gets the List of ResPacks.
+     * Gets the current ResPackConfiguration that is being displayed by the GUI.
      *
      * @return
-     *             ArrayList of ResPacks.
+     *      The ResPackConfiguration being displayed by the GUI.
      */
-    public static ArrayList<ResPack> getResPacks()
+    public static ResPackConfiguration getResPackConfiguration()
     {
-        return packs;
+        return respackConfig;
     }
 
     public static void toJSON()
     {
-        StringWriter stringWriter = new StringWriter();
-        JSONWriter writer = new JSONWriter(stringWriter);
-        writer
-            .object()
-                .key("options")
-                    .object()
-                        .key("StoreInSWF").value(true)
-                    .endObject()
-                .key("respacks").array();
-        for (ResPack pack : packs)
-        {
-            writer
-                .object()
-                    .key("name").value(pack.name)
-                    .key("enabled").value(true)
-                    .key("images").array();
-            for (Image image : pack.images)
-            {
-                writer
-                    .object()
-                        .key("name").value(image.getName())
-                        .key("enabled").value(image.isChecked())
-                        .key("bitmap").value(image.getBitmapName())
-                    .endObject();
-            }
-            writer.endArray();
-            writer.key("songs").array();
-            for (Song song : pack.songs)
-            {
-                writer
-                    .object()
-                        .key("title").value(song.getTitle())
-                        .key("enabled").value(song.isChecked())
-                        .key("sound").value(song.getSoundName())
-                    .endObject();
-            }
-            writer.endArray();
-            writer.endObject();
-        }
-        writer
-                .endArray()
-            .endObject();
-
-        System.out.println(stringWriter.getBuffer().toString());
+        respackConfig.toJSON();
     }
 
     /**
@@ -165,24 +118,22 @@ public class Core
      */
     private static void loadResPacks() throws Exception
     {
-        packs = new ArrayList<ResPack>();
-
         ResPack defaultResPack = new ResPack("Default Built-In ResPack");
         String defaultResPackFile = FileHandler.loadFile(BUILT_RESOURCE_PACK_PATH);
         Parser.getDefaultImages(defaultResPackFile, defaultResPack);
         Parser.getDefaultSongs(defaultResPackFile, defaultResPack);
-        packs.add(defaultResPack);
+        respackConfig.getResPacks().add(defaultResPack);
 
         String resPacksWebpage = Downloader.webpage(REMOTE_RES_PACKS_URL);
-        if (resPacksWebpage == null)
+        if (resPacksWebpage != null)
+        {
+            respackConfig.getResPacks().addAll(Parser.getRemoteResPacks(resPacksWebpage));
+        }
+        else
         {
             JOptionPane.showMessageDialog(frame,
                     "Could not locate remote respacks. Are you connected to the internet?\nURL: "
                             + REMOTE_RES_PACKS_URL);
-        }
-        else
-        {
-            packs.addAll(Parser.getRemoteResPacks(resPacksWebpage));
         }
     }
 }

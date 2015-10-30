@@ -7,6 +7,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import net.dv8tion.ResPackConfiguration;
 import net.dv8tion.types.ResPack;
 
 import org.scijava.swing.checkboxtree.CheckBoxNodeData;
@@ -20,9 +21,9 @@ public abstract class TreePane extends JScrollPane
     protected DefaultMutableTreeNode root;
     protected JTree tree;
 
-    public TreePane(ArrayList<ResPack> resPacks)
+    public TreePane(ResPackConfiguration config)
     {
-        this.resPacks = resPacks;
+        this.resPacks = config.getResPacks();
         root = new DefaultMutableTreeNode("Root");
     }
 

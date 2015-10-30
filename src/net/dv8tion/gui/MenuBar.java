@@ -36,13 +36,13 @@ public class MenuBar extends JMenuBar implements ActionListener
             System.out.println("Save file as..");
         else if (viewResPack.equals(source))
         {
-            Core.setTreePane(new ResPackTreePane(Core.getResPacks()));
+            Core.setTreePane(new ResPackTreePane(Core.getResPackConfiguration()));
             viewResPack.setEnabled(false);
             viewImageSong.setEnabled(true);
         }
         else if (viewImageSong.equals(source))
         {
-            Core.setTreePane(new ImageSongTreePane(Core.getResPacks()));
+            Core.setTreePane(new ImageSongTreePane(Core.getResPackConfiguration()));
             viewResPack.setEnabled(true);
             viewImageSong.setEnabled(false);
         }
