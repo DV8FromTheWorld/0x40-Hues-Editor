@@ -17,22 +17,15 @@ public class ResPackConfiguration
 {
     private ArrayList<ResPack> packs;
 
-    //Used for testing.
-    public static void main(String[] args) throws IOException
-    {
-        String testJSON = new String(Files.readAllBytes(Paths.get("Config.xml")), "UTF-8");
-        new ResPackConfiguration(testJSON);
-    }
-
     public ResPackConfiguration()
     {
         packs = new ArrayList<ResPack>();
     }
 
-    public ResPackConfiguration(String jsonFile)
+    public ResPackConfiguration(String jsonString)
     {
         this();
-        loadFromJson(jsonFile);
+        loadFromJson(jsonString);
     }
 
     public ArrayList<ResPack> getResPacks()
@@ -40,14 +33,18 @@ public class ResPackConfiguration
         return packs;
     }
 
-    public void loadFromJson(String jsonString)
+    private void loadFromJson(String jsonString)
     {
         JSONObject config = new JSONObject(jsonString);
         JSONObject option = config.getJSONObject("options");
         //TODO: Use options to actually do stuff.
 
-        JSONArray respacks = config.getJSONArray("respacks");
-        //Build Respacks.
+        for (Object respackObj : config.getJSONArray("respacks"))
+        {
+            JSONObject respackJson = (JSONObject) respackObj;
+            ResPack respack = new ResPack(respackJson);
+            packs.add(respack);
+        }
     }
 
     public void toJSON()
@@ -63,27 +60,7 @@ public class ResPackConfiguration
                 .array();
         for (ResPack pack : packs)
         {
-            writer
-                .object()
-                    .key("name").value(pack.name)
-                    .key("checked").value(pack.isRespackChecked())
-                    .key("imagesChecked").value(pack.isImagesChecked())
-                    .key("imagesEnabled").value(pack.isImagesEnabled())
-                    .key("songsChecked").value(pack.isSongsChecked())
-                    .key("songsEnabled").value(pack.isSongsEnabled())
-                    .key("images").array();
-            for (Image image : pack.images)
-            {
-                image.writeToJson(writer);
-            }
-            writer.endArray();
-            writer.key("songs").array();
-            for (Song song : pack.songs)
-            {
-                song.writeToJson(writer);
-            }
-            writer.endArray();
-            writer.endObject();
+            pack.writeToJson(writer);
         }
         writer
                 .endArray()

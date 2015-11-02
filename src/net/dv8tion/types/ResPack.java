@@ -4,6 +4,10 @@ import java.util.TreeSet;
 
 import net.dv8tion.gui.CheckBoxNode;
 
+import org.json.JSONObject;
+import org.json.JSONWriter;
+import org.scijava.swing.checkboxtree.CheckBoxNodeData;
+
 public class ResPack implements Comparable<ResPack>
 {
     public TreeSet<Image> images;
@@ -21,6 +25,44 @@ public class ResPack implements Comparable<ResPack>
         images = new TreeSet<Image>();
         songs = new TreeSet<Song>();
         this.name = name;
+    }
+
+    public ResPack(JSONObject respackJson)
+    {
+        this(respackJson.getString("name"));
+
+        //The checkbox data for the Pack-level node
+        CheckBoxNodeData respackData = new CheckBoxNodeData(
+                name,
+                respackJson.getBoolean("checked"),
+                true);
+        this.setRespackNode(new CheckBoxNode(respackData));
+
+        //The checkbox data for the Images node
+        CheckBoxNodeData imagesData = new CheckBoxNodeData(
+                name,
+                respackJson.getBoolean("imagesChecked"),
+                respackJson.getBoolean("imagesEnabled"));
+        this.setImagesNode(new CheckBoxNode(imagesData));
+
+        //The checkbox data for the Songs node
+        CheckBoxNodeData songsData = new CheckBoxNodeData(
+                name,
+                respackJson.getBoolean("songsChecked"),
+                respackJson.getBoolean("songsEnabled"));
+        this.setSongsNode(new CheckBoxNode(songsData));
+
+        //Load all the images and songs from the provided JSON.
+        for (Object imageObj : respackJson.getJSONArray("images"))
+        {
+            JSONObject imageJson = (JSONObject) imageObj;
+            this.images.add(new Image(imageJson));
+        }
+        for (Object songObj : respackJson.getJSONArray("songs"))
+        {
+            JSONObject songJson = (JSONObject) songObj;
+            this.songs.add(new Song(songJson));
+        }
     }
 
     public int imageCount()
@@ -98,6 +140,35 @@ public class ResPack implements Comparable<ResPack>
         songsNode.setEnabled(enabled);
     }
 
+    public void writeToJson(JSONWriter writer)
+    {
+        //Write the ResPack's Information to the JSON stream.
+        writer.object()
+            .key("name").value(this.name)
+            .key("checked").value(this.isRespackChecked())
+            .key("imagesChecked").value(this.isImagesChecked())
+            .key("imagesEnabled").value(this.isImagesEnabled())
+            .key("songsChecked").value(this.isSongsChecked())
+            .key("songsEnabled").value(this.isSongsEnabled());
+
+        //Loops through and writes each image's information.
+        writer.key("images").array();
+        for (Image image : this.images)
+        {
+            image.writeToJson(writer);
+        }
+        writer.endArray();
+
+        //Loops through and writes each song's information.
+        writer.key("songs").array();
+        for (Song song : this.songs)
+        {
+            song.writeToJson(writer);
+        }
+        writer.endArray();
+
+        writer.endObject();
+    }
     @Override
     public int compareTo(ResPack compare) {
         return compare.name.compareTo(name);
