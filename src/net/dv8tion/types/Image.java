@@ -2,7 +2,9 @@ package net.dv8tion.types;
 
 import net.dv8tion.gui.CheckBoxNode;
 
+import org.json.JSONObject;
 import org.json.JSONWriter;
+import org.scijava.swing.checkboxtree.CheckBoxNodeData;
 
 public class Image implements Comparable<Image>
 {
@@ -21,6 +23,19 @@ public class Image implements Comparable<Image>
         this.name = name;
         this.bitmapName = bitmapName;
         this.node = null;
+    }
+
+    public Image(JSONObject imageJson)
+    {
+        this.name = imageJson.getString("name");
+        this.bitmapName = String.valueOf(imageJson.get("bitmap"));//We use .get instead of getString because this could be null.
+
+        //Doesn't actually display this checkbox, it is used only to set the proper "enabled", "checked" values.
+        CheckBoxNodeData data = new CheckBoxNodeData(
+                name,
+                imageJson.getBoolean("checked"),
+                imageJson.getBoolean("enabled"));
+        this.setCheckboxNode(new CheckBoxNode(data));
     }
 
     public boolean isChecked()
