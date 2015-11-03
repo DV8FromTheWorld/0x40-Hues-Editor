@@ -96,7 +96,7 @@ public class Core
         String testJSON;
         try
         {
-            testJSON = new String(Files.readAllBytes(Paths.get("Config.xml")), "UTF-8");
+            testJSON = new String(Files.readAllBytes(Paths.get("Config.json")), "UTF-8");
             respackConfig = new ResPackConfiguration(testJSON);
             setTreePane(new ResPackTreePane(respackConfig));
         }

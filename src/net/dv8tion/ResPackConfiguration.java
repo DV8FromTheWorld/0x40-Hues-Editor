@@ -5,11 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import net.dv8tion.types.Image;
 import net.dv8tion.types.ResPack;
-import net.dv8tion.types.Song;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONStringer;
 
@@ -67,7 +64,7 @@ public class ResPackConfiguration
             .endObject();
         byte[] json = writer.toString().getBytes();
         try {
-            Files.write(Paths.get("Config.xml"), json);
+            Files.write(Paths.get("Config.json"), json);
             System.out.println("saved!");
         } catch (IOException e) {
             // TODO Auto-generated catch block
