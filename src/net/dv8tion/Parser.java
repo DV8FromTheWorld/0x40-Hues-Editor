@@ -21,62 +21,6 @@ public class Parser
     private static final String IMAGES_FILE_XML = "Images.xml";
     private static final String SONGS_FILE_XML = "Songs.xml";
 
-    public static void getDefaultImages(String defaultResPackFile, ResPack defaultResPack) throws Exception
-    {
-        Pattern p = Pattern.compile("images = \\[\\{ .*?\\}\\];"); //Regex: images = [{.*}]   Selects all the images
-        Matcher m = p.matcher(defaultResPackFile);
-
-        find(m, "Could not find images in defaultResPack defined by: " + Core.BUILT_RESOURCE_PACK_PATH);
-
-        String imagesText = m.group(0).replaceAll(" {2,}", " "); //Replaces all instances of 2 or more consecutive spaces with a single space
-
-        p = Pattern.compile("\\{.*?\\}"); //Regex: {.*?}  Selects an individual image
-        m = p.matcher(imagesText);
-
-        Pattern namePattern = Pattern.compile("(?<=\"name\":\").*?(?=\")");  //Selects the name attribute of each image
-        Pattern bitmapPattern = Pattern.compile("(?<=((\"bitmap\":)|(\"bitmaps\":\\[))this\\.).*?(?=,)");  //Selects the bitmap attribute of each image
-        Matcher nameMatch;
-        Matcher bitmapMatch;
-        while (m.find())    //Loops through each individually selected image
-        {
-            nameMatch = namePattern.matcher(m.group());
-            find(nameMatch, "Could not locate the name of the image for: " + m.group());
-
-            bitmapMatch = bitmapPattern.matcher(m.group());
-            find(bitmapMatch, "Could not located the bitmapName of the image for : " + m.group());
-
-            defaultResPack.images.add(new Image(nameMatch.group(), bitmapMatch.group()));
-        }
-    }
-
-    public static void getDefaultSongs(String defaultResPackFile, ResPack defaultResPack) throws Exception
-    {
-        Pattern p = Pattern.compile("songs = \\[\\{.*?\\}\\]"); //Regex: songs = [{.*}]   Selects all the songs
-        Matcher m = p.matcher(defaultResPackFile);
-
-        find(m, "Could not find songs in defaultResPack defined by: " + Core.BUILT_RESOURCE_PACK_PATH);
-
-        String songsText = m.group(0).replaceAll(" {2,}" , " "); //Replaces all instances of 2 or more consecutive spaces with a single space
-
-        p = Pattern.compile("\\{.*?\\}"); //Regex {.*?} Selects an individual song
-        m = p.matcher(songsText);
-
-        Pattern titlePattern = Pattern.compile("(?<=\"title\":\").*?(?=\")");  //Selects the title attribute of each song
-        Pattern soundPattern = Pattern.compile("(?<=\"sound\":this\\.).*?(?=,)"); //Selects the sound attribute of each song
-        Matcher titleMatch;
-        Matcher soundMatch;
-        while (m.find())        //Loops through each individually selected song
-        {
-            titleMatch = titlePattern.matcher(m.group());
-            find(titleMatch, "Could not locate the name of the song for: " + m.group());
-
-            soundMatch = soundPattern.matcher(m.group());
-            find(soundMatch, "Could not locate the soundName of the song for: " + m.group());
-
-            defaultResPack.songs.add(new Song(titleMatch.group(), soundMatch.group()));
-        }
-    }
-
     public static ResPack getLocalResPack(String folderPath) throws IOException
     {
         ResPack resPack;

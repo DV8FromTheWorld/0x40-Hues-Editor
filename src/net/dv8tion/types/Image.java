@@ -9,29 +9,20 @@ import org.scijava.swing.checkboxtree.CheckBoxNodeData;
 public class Image implements Comparable<Image>
 {
     private String name;
-    private String bitmapName;
     private boolean animated;
 
     private CheckBoxNode node;
 
     public Image(String name, boolean animated)
     {
-        this(name, null);
-        this.animated = animated;
-    }
-
-    public Image(String name, String bitmapName)
-    {
         this.name = name;
-        this.bitmapName = bitmapName;
+        this.animated = animated;
         this.node = null;
-        this.animated = false;
     }
 
     public Image(JSONObject imageJson)
     {
         this.name = imageJson.getString("name");
-        this.bitmapName = String.valueOf(imageJson.get("bitmap"));//We use .get instead of getString because this could be null.
         this.animated = imageJson.getBoolean("isAnimated");
 
         //Doesn't actually display this checkbox, it is used only to set the proper "enabled", "checked" values.
@@ -62,11 +53,6 @@ public class Image implements Comparable<Image>
         return name;
     }
 
-    public String getBitmapName()
-    {
-        return bitmapName;
-    }
-
     public CheckBoxNode getCheckboxNode()
     {
         return node;
@@ -90,7 +76,6 @@ public class Image implements Comparable<Image>
                 .key("checked").value(this.isChecked())
                 .key("enabled").value(this.isEnabled())
                 .key("isAnimated").value(this.isAnimated())
-                .key("bitmap").value(this.getBitmapName())
             .endObject();
     }
 

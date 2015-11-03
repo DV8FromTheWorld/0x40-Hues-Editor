@@ -12,14 +12,9 @@ import javax.swing.tree.TreePath;
 import net.dv8tion.gui.MenuBar;
 import net.dv8tion.gui.ResPackTreePane;
 import net.dv8tion.gui.TreePane;
-import net.dv8tion.types.ResPack;
 
 public class Core
 {
-    public static final String BUILD_RESOURCE_PACK = "BuiltResourcePack.as";
-    public static final String EXTRACTED_SCRIPTS_LOCATION = "./scripts/";
-    public static final String BUILT_RESOURCE_PACK_PATH = EXTRACTED_SCRIPTS_LOCATION + BUILD_RESOURCE_PACK;
-    public static final String REMOTE_RES_PACKS_URL = "http://cdn.0x40hu.es/getRespacks.php";
 
     private static ResPackConfiguration respackConfig;
     private static JFrame frame;
@@ -36,7 +31,7 @@ public class Core
     {
         respackConfig = new ResPackConfiguration();
         //Open window - Preforming Setup
-        FileHandler.extractRequiredFilesFromSWF();  //Downloading SWF
+        Downloader.checkForRespack();;  //Downloading SWF
         loadResPacks();  //Downloading respack (n)  - Loading respack (n)
 
         frame = new JFrame();
@@ -118,13 +113,7 @@ public class Core
      */
     private static void loadResPacks() throws Exception
     {
-        ResPack defaultResPack = new ResPack("Default Built-In ResPack");
-        String defaultResPackFile = FileHandler.loadFile(BUILT_RESOURCE_PACK_PATH);
-        Parser.getDefaultImages(defaultResPackFile, defaultResPack);
-        Parser.getDefaultSongs(defaultResPackFile, defaultResPack);
-        respackConfig.getResPacks().add(defaultResPack);
-
-        String resPacksWebpage = Downloader.webpage(REMOTE_RES_PACKS_URL);
+        String resPacksWebpage = Downloader.webpage(Downloader.REMOTE_RES_PACKS_URL);
         if (resPacksWebpage != null)
         {
             respackConfig.getResPacks().addAll(Parser.getRemoteResPacks(resPacksWebpage));
@@ -133,7 +122,7 @@ public class Core
         {
             JOptionPane.showMessageDialog(frame,
                     "Could not locate remote respacks. Are you connected to the internet?\nURL: "
-                            + REMOTE_RES_PACKS_URL);
+                            + Downloader.REMOTE_RES_PACKS_URL);
         }
     }
 }

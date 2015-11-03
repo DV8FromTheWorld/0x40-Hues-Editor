@@ -15,7 +15,8 @@ import javax.imageio.ImageIO;
 
 public class Downloader
 {
-    public static final String RES_PACK_ZIP_STORAGE = "./Resources/packsZips/";
+    public static final String SWF_URL = "http://muhnig.ga/versions/0x40%20Hues%20v5.11.swf";
+    public static final String REMOTE_RES_PACKS_URL = "http://cdn.0x40hu.es/getRespacks.php";
 
     public static String webpage(String urlText)
     {
@@ -75,9 +76,23 @@ public class Downloader
         }
     }
 
+    public static void checkForRespack() throws IOException
+    {
+        File swfFile = new File(FileHandler.SWF_FILE);
+        if (!swfFile.exists())
+        {
+            file(SWF_URL, FileHandler.SWF_FILE);
+            //TODO: Check MD5 checksum while downloading.
+        }
+        else
+        {
+            //TODO: Run MD5 checksum on already existing file.
+        }
+    }
+
     public static File resPack(String urlText, String packZipName) throws IOException
     {
-        return file(urlText, RES_PACK_ZIP_STORAGE + packZipName);
+        return file(urlText, FileHandler.RES_PACK_ZIP_LOCATION + packZipName);
     }
 
     public static File file(String urlText, String fileName) throws IOException
