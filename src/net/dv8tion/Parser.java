@@ -108,6 +108,7 @@ public class Parser
 
         JSONObject info = XML.toJSONObject(FileHandler.loadFile(infoFile)).getJSONObject("info");
         resPack = new ResPack(info.getString("name"));
+        resPack.path = folder.getPath();
 
         if (folderFiles.contains(IMAGES_FILE_XML) || folderFiles.contains(IMAGES_FILE_XML.toLowerCase()))
         {

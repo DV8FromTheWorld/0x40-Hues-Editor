@@ -19,17 +19,20 @@ public class ResPack implements Comparable<ResPack>
 
     public String name;
     public String url;
+    public String path;
 
     public ResPack(String name)
     {
         images = new TreeSet<Image>();
         songs = new TreeSet<Song>();
         this.name = name;
+        this.path = null;
     }
 
     public ResPack(JSONObject respackJson)
     {
         this(respackJson.getString("name"));
+        this.path = String.valueOf(respackJson.get("path"));
 
         //The checkbox data for the Pack-level node
         CheckBoxNodeData respackData = new CheckBoxNodeData(
@@ -145,6 +148,7 @@ public class ResPack implements Comparable<ResPack>
         //Write the ResPack's Information to the JSON stream.
         writer.object()
             .key("name").value(this.name)
+            .key("path").value(this.path)
             .key("checked").value(this.isRespackChecked())
             .key("imagesChecked").value(this.isImagesChecked())
             .key("imagesEnabled").value(this.isImagesEnabled())
