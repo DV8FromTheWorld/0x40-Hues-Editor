@@ -9,18 +9,24 @@ import org.scijava.swing.checkboxtree.CheckBoxNodeData;
 public class Song implements Comparable<Song>
 {
     private String title;
+    private String buildTitle;
 
     private CheckBoxNode node;
 
-    public Song(String title)
+    public Song(String title, String buildTitle)
     {
         this.title = title;
+        this.buildTitle = buildTitle;
         node = null;
     }
 
     public Song(JSONObject songJson)
     {
         this.title = songJson.getString("title");
+        this.buildTitle = songJson.get("buildTitle") != null
+                                ? String.valueOf(songJson.get("buildTitle"))
+                                : null;
+
         //Doesn't actually display this checkbox, it is used only to set the proper "enabled", "checked" values.
         CheckBoxNodeData data = new CheckBoxNodeData(
                 title,
@@ -37,6 +43,11 @@ public class Song implements Comparable<Song>
     public CheckBoxNode getCheckboxNode()
     {
         return node;
+    }
+
+    public boolean hasBuild()
+    {
+        return buildTitle != null;
     }
 
     public boolean isChecked()
@@ -59,6 +70,7 @@ public class Song implements Comparable<Song>
         writer
             .object()
                 .key("title").value(this.getTitle())
+                .key("buildTitle").value(this.buildTitle)
                 .key("checked").value(this.isChecked())
                 .key("enabled").value(this.isEnabled())
             .endObject();

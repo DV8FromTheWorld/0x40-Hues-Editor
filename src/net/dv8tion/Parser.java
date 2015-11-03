@@ -108,15 +108,19 @@ public class Parser
                 {
                     if (song instanceof JSONObject)
                     {
-                        JSONObject name = (JSONObject) song;
-                        resPack.songs.add(new Song(name.getString("title")));
+                        JSONObject songJson = (JSONObject) song;
+                        resPack.songs.add(new Song(
+                                songJson.getString("title"),
+                                songJson.has("buildup") ? songJson.getString("buildup") : null));
                     }
                 }
             }
             else if (songsJson.optJSONObject("song") != null)
             {
                 JSONObject song = songsJson.getJSONObject("song");
-                resPack.songs.add(new Song(song.getString("title")));
+                resPack.songs.add(new Song(
+                        song.getString("title"),
+                        song.has("buildup") ? song.getString("buildup") : null));
             }
         }
 
