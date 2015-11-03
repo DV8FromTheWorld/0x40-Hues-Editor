@@ -10,12 +10,14 @@ public class Image implements Comparable<Image>
 {
     private String name;
     private String bitmapName;
+    private boolean animated;
 
     private CheckBoxNode node;
 
-    public Image(String name)
+    public Image(String name, boolean animated)
     {
         this(name, null);
+        this.animated = animated;
     }
 
     public Image(String name, String bitmapName)
@@ -23,12 +25,14 @@ public class Image implements Comparable<Image>
         this.name = name;
         this.bitmapName = bitmapName;
         this.node = null;
+        this.animated = false;
     }
 
     public Image(JSONObject imageJson)
     {
         this.name = imageJson.getString("name");
         this.bitmapName = String.valueOf(imageJson.get("bitmap"));//We use .get instead of getString because this could be null.
+        this.animated = imageJson.getBoolean("isAnimated");
 
         //Doesn't actually display this checkbox, it is used only to set the proper "enabled", "checked" values.
         CheckBoxNodeData data = new CheckBoxNodeData(
@@ -46,6 +50,11 @@ public class Image implements Comparable<Image>
     public boolean isEnabled()
     {
         return node != null ? node.isEnabled() : true;
+    }
+
+    public boolean isAnimated()
+    {
+        return animated;
     }
 
     public String getName()
@@ -68,6 +77,11 @@ public class Image implements Comparable<Image>
         this.node = node;
     }
 
+    public void setAnimated(boolean animated)
+    {
+        this.animated = animated;
+    }
+
     public void writeToJson(JSONWriter writer)
     {
         writer
@@ -75,6 +89,7 @@ public class Image implements Comparable<Image>
                 .key("name").value(this.getName())
                 .key("checked").value(this.isChecked())
                 .key("enabled").value(this.isEnabled())
+                .key("isAnimated").value(this.isAnimated())
                 .key("bitmap").value(this.getBitmapName())
             .endObject();
     }

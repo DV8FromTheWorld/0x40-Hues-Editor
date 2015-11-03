@@ -129,15 +129,19 @@ public class Parser
                 {
                     if (image instanceof JSONObject)
                     {
-                        JSONObject name = (JSONObject) image;
-                        resPack.images.add(new Image(name.getString("name")));
+                        JSONObject imageJson = (JSONObject) image;
+                        resPack.images.add(new Image(
+                                imageJson.getString("name"),
+                                imageJson.has("frameDuration")));
                     }
                 }
             }
             else if (imagesJson.optJSONObject("image") != null)
             {
                 JSONObject image = imagesJson.getJSONObject("image");
-                resPack.images.add(new Image(image.getString("name")));
+                resPack.images.add(new Image(
+                        image.getString("name"),
+                        image.has("frameDuration")));
             }
         }
 
