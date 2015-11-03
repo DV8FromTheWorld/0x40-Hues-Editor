@@ -29,7 +29,10 @@ public class MenuBar extends JMenuBar implements ActionListener
         if (fileNew.equals(source))
             System.out.println("Create new file");
         else if (fileOpen.equals(source))
+        {
             System.out.println("Open new file");
+            Core.load();
+        }
         else if (fileSave.equals(source))
             Core.toJSON();
         else if (fileSaveAs.equals(source))

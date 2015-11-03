@@ -2,6 +2,9 @@ package net.dv8tion;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -85,6 +88,21 @@ public class Core
                     tree.expandPath(path);
                 }
             }
+        }
+    }
+
+    public static void load()
+    {
+        String testJSON;
+        try
+        {
+            testJSON = new String(Files.readAllBytes(Paths.get("Config.xml")), "UTF-8");
+            respackConfig = new ResPackConfiguration(testJSON);
+            setTreePane(new ResPackTreePane(respackConfig));
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
         }
     }
 
